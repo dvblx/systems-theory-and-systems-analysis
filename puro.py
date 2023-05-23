@@ -69,9 +69,7 @@ class PuroAlgorithm:
             if raw_sq_sum < min_dif:
                 min_dif = raw_sq_sum
             print("\n")
-            #print(raw)
             dif_matrix.append(raw)
-        # print(min_dif, dif_sum)
         return dif_matrix
 
     def create_relationship_graph(self, matrix: list):
@@ -88,15 +86,15 @@ class PuroAlgorithm:
             print(f"Э{i + 1}", end='\t')
             for j in range(self.expert_count):
                 tmp = round(matrix[i][j] / self.D_max, 2)
-                if len(str(tmp ==4)):
+                if len(str(tmp == 4)):
                     print(str(tmp), end=' ')
                 else:
                     print(str(tmp), end='\t')
                 raw.append(tmp)
+
                 if 0 < tmp < dporog:
                     dporog = tmp
             print("\n")
-            #print(raw)
             m.append(raw)
         print(f"d porog = {dporog} \n")
         for i in range(self.expert_count):
@@ -116,7 +114,6 @@ class PuroAlgorithm:
                     raw.append(0)
                     print(0, end='\t')
             print("\n")
-            #print(raw)
 
     def kemeni(self, matrix_1, matrix_2):
         if matrix_1 == matrix_2:
@@ -128,7 +125,7 @@ class PuroAlgorithm:
                     difference += abs(matrix_1[i][j] - matrix_2[i][j])
             return difference // 2
 
-    def main(self, filling_choice):
+    def main(self, filling_choice, file_name=None):
         ranking_of_experts = []
         if filling_choice == 1:
             self.objects = input('Исходные объекты в строчку:').split()
@@ -136,7 +133,7 @@ class PuroAlgorithm:
             for k in range(self.expert_count):
                 ranking_of_experts.append(self.one_expert_ranking_filling_manually(k))
         else:
-            with open('test_data_puro.txt') as file:
+            with open(file_name) as file:
                 lines = file.readlines()
                 self.objects = lines.pop(0).strip().split()
                 self.D_max = len(self.objects) * (len(self.objects) - 1)
@@ -151,7 +148,7 @@ class PuroAlgorithm:
         self.create_relationship_graph(dm)
 
 
-def choice():
+def action_choice():
     variant = input("1.Провести следующий тур.\n2.Завершить работу программы.\nНомер действия:")
     if variant == "1":
         return 1
@@ -159,7 +156,7 @@ def choice():
         return 0
     else:
         print("Такого варианта нет")
-        choice()
+        return action_choice()
 
 
 def filling_choice():
@@ -178,8 +175,8 @@ if __name__ == '__main__':
     fl = 1
     while fl:
         selection = filling_choice()
-        p.main(selection)
-        fl = choice()
+        p.main(selection, 'test_data_puro.txt')
+        fl = action_choice()
 
 # b a c d h
 # c b a h d
